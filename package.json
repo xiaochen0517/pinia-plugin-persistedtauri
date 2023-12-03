@@ -1,6 +1,6 @@
 {
   "name": "pinia-plugin-persistedtauri",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -27,6 +27,8 @@
   ],
   "dependencies": {
     "@tauri-apps/api": "^1.5.1",
+    "@types/lodash": "^4.14.202",
+    "lodash": "^4.17.21",
     "pinia": "^2.1.7",
     "vue": "^3.0.0"
   },

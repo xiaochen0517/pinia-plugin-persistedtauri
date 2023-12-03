@@ -12,10 +12,10 @@
 <h1 align="center">pinia-plugin-persistedtauri</h1>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/pinia-plugin-persistedstate">
+  <a href="https://www.npmjs.com/package/pinia-plugin-persistedtauri">
     <img alt="npm" src="https://img.shields.io/npm/v/pinia-plugin-persistedstate?color=%23c12127&label=version&logo=npm" />
   </a>
-  <a href="https://github.com/prazdevs/pinia-plugin-persistedstate/tree/HEAD/LICENSE">
+  <a href="https://github.com/xiaochen0517/pinia-plugin-persistedtauri/blob/master/LICENSE">
     <img alt="License" src="https://img.shields.io/github/license/prazdevs/pinia-plugin-persistedstate?color=%233da639&logo=open%20source%20initiative" />
   </a>
 </p>

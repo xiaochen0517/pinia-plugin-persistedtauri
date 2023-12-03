@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-    <i>The icon are based on 
+    <i>此图标基于
     <a href="https://prazdevs.github.io/pinia-plugin-persistedstate/">pinia-plugin-persistedstate</a>
-    and 
+    和 
     <a href="https://pinia.vuejs.org/">pinia</a></i>
 </p>
 
@@ -30,9 +30,9 @@
   </a>
 </p>
 
-## ✨ Quickstart
+## ✨ 快速开始
 
-### 🚚 Install
+### 🚚 安装
 
 ```bash
 # npm
@@ -42,7 +42,7 @@ npm install --save pinia-plugin-persistedtauri
 yarn add pinia-plugin-persistedtauri
 ```
 
-### 🛠 Configuration
+### 🛠 配置
 
 ```ts
 import {createPinia} from 'pinia'
@@ -52,34 +52,34 @@ const pinia = createPinia()
 pinia.use(createPersistedState())
 ```
 
-### ⚙️ Options
+### ⚙️ 选项
 
-You can do nothing and the persistent save will work automatically, but you can also do some configuration.
+您可以不执行任何操作，插件将自动启动，但您也可以进行一些配置。
 
 ```ts
 defineStore('main', {
   state: () => ({
     count: 0,
   }),
-  persist: true, // default: true
+  persist: true, // 默认为 true ，可以使用 false 禁用持久化
 })
 ```
 
 ```ts
-// use false to disable persist
+// 使用 false 禁用持久化
 persist: boolean | PersistedTauriOptions
 
 type PersistedTauriOptions = {
-  // The file name or key name of the data is stored by default, using the store ID
+  // 默认使用 store ID 作为数据的文件名或者键名，如果你想自定义，可以使用这个选项
   name?: string,
-  // Customizing storage mode, compatible with localStorage and sessionStorage
+  // 自定义存储模式，兼容 localStorage 和 sessionStorage
   storage?: AsyncStorage | Storage,
-  // Customizing the way data is saved, currently only StorageSaveType.JSON is supported.
+  // 自定义数据保存方式，目前只支持 StorageSaveType.JSON
   saveType?: StorageSaveType,
 }
 ```
 
-## 🗝️ License
+## 🗝️ 许可证
 
 [MIT LICENSE](./LICENSE)
 

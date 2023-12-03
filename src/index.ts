@@ -1,6 +1,11 @@
-import { createPersistedState } from './plugin'
+import {createPersistedState} from './plugin'
 
-import './types'
+import {AsyncStorage, PersistedTauriOptions, StorageSaveType,} from "./types";
 
-export { createPersistedState }
+export {
+  createPersistedState,
+  AsyncStorage,
+  PersistedTauriOptions,
+  StorageSaveType,
+}
 export default createPersistedState()

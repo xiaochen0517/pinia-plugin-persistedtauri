@@ -1,27 +1,28 @@
-import { type PiniaPluginContext, type StateTree } from 'pinia'
+import {type StateTree} from 'pinia'
 
 declare module 'pinia' {
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     /**
      * Persists store in storage.
-     * @see https://prazdevs.github.io/pinia-plugin-persistedstate
      */
-    persist?: boolean
+    persist?: boolean | PersistedTauriOptions;
   }
+}
 
-  export interface PiniaCustomProperties {
-    /**
-     * Rehydrates store from persisted state
-     * Warning: this is for advances usecases, make sure you know what you're doing.
-     * @see https://prazdevs.github.io/pinia-plugin-persistedstate/guide/advanced.html#forcing-the-rehydration
-     */
-    $hydrate: (opts?: { runHooks?: boolean }) => void
+export interface AsyncStorage {
+  isAsyncStorage: boolean
+  getItem: (key: string) => Promise<string | null>
+  setItem: (key: string, value: string) => Promise<void>
+  removeItem: (key: string) => Promise<void>
+  clear: () => Promise<void>
+}
 
-    /**
-     * Persists store into configured storage
-     * Warning: this is for advances usecases, make sure you know what you're doing.
-     * @see https://prazdevs.github.io/pinia-plugin-persistedstate/guide/advanced.html#forcing-the-persistence
-     */
-    $persist: () => void
-  }
+export type PersistedTauriOptions = {
+  name?: string,
+  storage?: AsyncStorage | Storage,
+  saveType?: StorageSaveType,
+}
+
+export enum StorageSaveType {
+  JSON,
 }

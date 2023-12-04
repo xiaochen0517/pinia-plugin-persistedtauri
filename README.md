@@ -13,10 +13,10 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/pinia-plugin-persistedtauri">
-    <img alt="npm" src="https://img.shields.io/npm/v/pinia-plugin-persistedtauri?color=%23c12127&label=pinia-plugin-persistedtaur&logo=npm" />
+    <img alt="npm" src="https://img.shields.io/npm/v/pinia-plugin-persistedtauri?color=%23c12127&label=pinia-plugin-persistedtauri&logo=npm" />
   </a>
   <a href="https://github.com/xiaochen0517/pinia-plugin-persistedtauri/blob/master/LICENSE">
-    <img alt="License" src="https://img.shields.io/github/license/prazdevs/pinia-plugin-persistedstate?color=%233da639&logo=open%20source%20initiative" />
+    <img alt="License" src="https://img.shields.io/github/license/xiaochen0517/pinia-plugin-persistedtauri?color=%233da639&logo=open%20source%20initiative" />
   </a>
 </p>
 

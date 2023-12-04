@@ -5,11 +5,11 @@ import _ from "lodash";
 
 export function createPersistedState(): PiniaPlugin {
   return (context: PiniaPluginContext) => {
-    console.log('context', context);
+    console.log("context", context);
     const persistOptions = context.options.persist;
     context.store.$subscribe((mutation, state: StateTree) => {
-      console.log('mutation', mutation);
-      console.log('state', state);
+      console.log("mutation", mutation);
+      console.log("state", state);
       if (persistOptions !== undefined && persistOptions === false) {
         // persist is disabled
         return;
@@ -21,12 +21,12 @@ export function createPersistedState(): PiniaPlugin {
         storageOptions = {...storageOptions, ...persistOptions};
       }
       // save state
-      saveState(state, storageOptions)
-          .then(() => {
-          })
-          .catch((err) => {
-            console.error("🚨pinia-plugin-persistedtauri error: ", err);
-          });
+      saveState(state, storageOptions, persistOptions)
+        .then(() => {
+        })
+        .catch((err) => {
+          console.error("🚨pinia-plugin-persistedtauri error: ", err);
+        });
     });
-  }
+  };
 }

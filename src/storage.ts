@@ -1,4 +1,4 @@
-import {AsyncStorage, PersistedTauriOptions, StorageSaveType} from "./types";
+import {AsyncStorage, DefineStoreOptionsPersist, PersistedTauriOptions, StorageSaveType} from "./types";
 import {invoke} from "@tauri-apps/api/tauri";
 import {StateTree} from "pinia";
 
@@ -57,24 +57,87 @@ export const defaultPersistedTauriOptions: PersistedTauriOptions = {
   name: "pinia-state",
   storage: new TauriStorage(),
   saveType: StorageSaveType.JSON,
+};
+
+export const saveState = (state: StateTree, options: PersistedTauriOptions, userOptions: DefineStoreOptionsPersist): Promise<void> => {
+  const checkResult = checkParams(options);
+  if (checkResult !== null) {
+    return Promise.reject(checkResult);
+  }
+  const currentStorage = getDefaultOrUserStorage(options.storage, userOptions);
+  if (storageIsAsyncStorage(currentStorage)) {
+    return (currentStorage as AsyncStorage).setItem(options.name ?? "", JSON.stringify(state, null, 2));
+  }
+  (currentStorage as Storage).setItem(options.name ?? "", JSON.stringify(state, null, 2));
+  return Promise.resolve();
+};
+
+const getDefaultOrUserStorage = (storage: AsyncStorage | Storage | undefined, userOptions: DefineStoreOptionsPersist): AsyncStorage | Storage => {
+  // if the user has configured storage, the user-configured storage is used directly
+  if (userStorageIsNotNone(userOptions) && storage !== undefined && storage !== null) {
+    return storage;
+  }
+  // check current environment is browser or tauri
+  // if tauri, use tauri storage
+  // else use browser storage
+  if (isTauri()) {
+    return new TauriStorage();
+  } else {
+    return localStorage;
+  }
+};
+
+const userStorageIsNotNone = (userOptions: DefineStoreOptionsPersist): boolean => {
+  return userOptions !== undefined && userOptions !== null && typeof userOptions !== "boolean"
+    && userOptions.storage !== undefined && userOptions.storage !== null;
+};
+
+const isTauri = (): boolean => {
+  return !!(window as any).__TAURI__;
+};
+
+const storageIsAsyncStorage = (storage: AsyncStorage | Storage): boolean => {
+  return storage.isAsyncStorage !== undefined && storage.isAsyncStorage !== null && typeof storage.isAsyncStorage === "boolean";
+};
+
+export const getState = (options: PersistedTauriOptions, userOptions: DefineStoreOptionsPersist): Promise<string> => {
+  const checkResult = checkParams(options);
+  if (checkResult !== null) {
+    return Promise.reject(checkResult);
+  }
+  const currentStorage = getDefaultOrUserStorage(options.storage, userOptions);
+  if (!options.name) {
+    return Promise.reject("OptionsName is undefined");
+  }
+  if (storageIsAsyncStorage(currentStorage)) {
+    return new Promise((resolve, reject) => {
+      (currentStorage as AsyncStorage).getItem(options.name ?? "").then((data: string | null | undefined) => {
+        if (data === undefined || data === null || data === "") {
+          return reject("Data is undefined or null");
+        }
+        return resolve(data);
+      }).catch((err) => {
+        reject(err);
+      });
+    })
+  }
+  let resultItem = (currentStorage as Storage).getItem(options.name);
+  if (resultItem === null || resultItem === undefined || resultItem === "") {
+    return Promise.reject("Data is undefined or null");
+  }
+  return Promise.resolve(resultItem);
 }
 
-export const saveState = (state: StateTree, options: PersistedTauriOptions): Promise<void> => {
+const checkParams = (options: PersistedTauriOptions): string | null => {
   const {name, storage, saveType} = options;
   if (name === undefined || name === null) {
-    return Promise.reject("Name is undefined");
+    return "Name is undefined";
   }
   if (storage === undefined || storage === null) {
-    return Promise.reject("Storage is undefined");
+    return "Storage is undefined";
   }
   if (saveType === undefined || saveType === null) {
-    return Promise.reject("Save type is undefined");
+    return "Save type is undefined";
   }
-
-  if (storage.isAsyncStorage !== undefined && storage.isAsyncStorage !== null && typeof storage.isAsyncStorage === "boolean") {
-    return (storage as AsyncStorage).setItem(name, JSON.stringify(state, null, 2));
-  } else {
-    (storage as Storage).setItem(name, JSON.stringify(state, null, 2));
-    return Promise.resolve();
-  }
+  return null;
 }

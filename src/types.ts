@@ -1,15 +1,21 @@
-import {type StateTree} from 'pinia'
+import {type StateTree} from "pinia";
 
-declare module 'pinia' {
+declare module "pinia" {
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     /**
      * Persists store in storage.
      */
-    persist?: boolean | PersistedTauriOptions;
+    persist?: DefineStoreOptionsPersist;
   }
 }
 
+export type DefineStoreOptionsPersist = boolean | PersistedTauriOptions | undefined;
+
 export interface AsyncStorage {
+  /**
+   * Asynchronous storage tag, a property that distinguishes between asynchronous and synchronous storage
+   * can be true or false
+   */
   isAsyncStorage: boolean
   getItem: (key: string) => Promise<string | null>
   setItem: (key: string, value: string) => Promise<void>

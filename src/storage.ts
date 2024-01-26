@@ -93,6 +93,7 @@ const userStorageIsNotNone = (userOptions: DefineStoreOptionsPersist): boolean =
 };
 
 const isTauri = (): boolean => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return !!(window as any).__TAURI__;
 };
 
@@ -119,14 +120,14 @@ export const getState = (options: PersistedTauriOptions, userOptions: DefineStor
       }).catch((err) => {
         reject(err);
       });
-    })
+    });
   }
-  let resultItem = (currentStorage as Storage).getItem(options.name);
+  const resultItem = (currentStorage as Storage).getItem(options.name);
   if (resultItem === null || resultItem === undefined || resultItem === "") {
     return Promise.reject("Data is undefined or null");
   }
   return Promise.resolve(resultItem);
-}
+};
 
 const checkParams = (options: PersistedTauriOptions): string | null => {
   const {name, storage, saveType} = options;
@@ -140,4 +141,4 @@ const checkParams = (options: PersistedTauriOptions): string | null => {
     return "Save type is undefined";
   }
   return null;
-}
+};

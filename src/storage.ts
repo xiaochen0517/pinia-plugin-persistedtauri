@@ -1,4 +1,4 @@
-import {AsyncStorage, PersistedTauriOptions, StorageSaveType} from "./types";
+import {AsyncStorage, PersistedTauriOptions} from "./types";
 import {StateTree} from "pinia";
 import {TauriStorage} from "./storages/TauriStorage";
 import {JsonSerializer} from "./storages/JsonSerializer";
@@ -19,7 +19,6 @@ export const defaultPersistedTauriOptions: PersistedTauriOptions = {
   name: "pinia-state",
   storage: getDefaultStorage(),
   serializer: new JsonSerializer(),
-  saveType: StorageSaveType.JSON,
 };
 
 export const saveState = (state: StateTree, options: PersistedTauriOptions): Promise<void> => {
@@ -67,15 +66,12 @@ export const getState = (options: PersistedTauriOptions): Promise<unknown> => {
 };
 
 const checkParams = (options: PersistedTauriOptions): string | null => {
-  const {name, storage, saveType} = options;
+  const {name, storage} = options;
   if (name === undefined || name === null) {
     return "Name is undefined";
   }
   if (storage === undefined || storage === null) {
     return "Storage is undefined";
-  }
-  if (saveType === undefined || saveType === null) {
-    return "Save type is undefined";
   }
   return null;
 };

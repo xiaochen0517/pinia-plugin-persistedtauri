@@ -22,15 +22,10 @@ export interface AsyncStorage {
   clear: () => Promise<void>
 }
 
-export enum StorageSaveType {
-  JSON,
-}
-
 export type PersistedTauriOptions = {
   name: string,
   storage: AsyncStorage | Storage,
   serializer: StateSerializer,
-  saveType: StorageSaveType,
 }
 
 export interface StateSerializer {

@@ -58,11 +58,11 @@ export const getState = (options: PersistedTauriOptions): Promise<unknown> => {
       });
     });
   }
-  const resultItem = (options.storage as Storage).getItem(options.name);
-  if (resultItem === null || resultItem === undefined || resultItem === "") {
+  const data = (options.storage as Storage).getItem(options.name);
+  if (data === null || data === undefined || data === "") {
     return Promise.reject("Data is undefined or null");
   }
-  return Promise.resolve(resultItem);
+  return Promise.resolve(options.serializer.deserialize(data));
 };
 
 const checkParams = (options: PersistedTauriOptions): string | null => {

@@ -74,8 +74,8 @@ type PersistedTauriOptions = {
   name?: string,
   // Customizing storage mode, compatible with localStorage and sessionStorage
   storage?: AsyncStorage | Storage,
-  // Customizing the way data is saved, currently only StorageSaveType.JSON is supported.
-  saveType?: StorageSaveType,
+  // Customizing the way data is serialized and deserialized
+  serializer?: StateSerializer,
 }
 ```
 

@@ -1,6 +1,5 @@
-import {type StateTree} from "pinia";
-
 declare module "pinia" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export interface DefineStoreOptionsBase<S extends StateTree, Store> {
     /**
      * Persists store in storage.
@@ -9,7 +8,7 @@ declare module "pinia" {
   }
 }
 
-export type DefineStoreOptionsPersist = boolean | PersistedTauriOptions | undefined;
+export type DefineStoreOptionsPersist = boolean | Partial<PersistedTauriOptions> | undefined;
 
 export interface AsyncStorage {
   /**
@@ -24,11 +23,12 @@ export interface AsyncStorage {
 }
 
 export type PersistedTauriOptions = {
-  name?: string,
-  storage?: AsyncStorage | Storage,
-  saveType?: StorageSaveType,
+  name: string,
+  storage: AsyncStorage | Storage,
+  serializer: StateSerializer,
 }
 
-export enum StorageSaveType {
-  JSON,
+export interface StateSerializer {
+  serialize: (state: unknown) => string
+  deserialize: (state: string) => unknown
 }

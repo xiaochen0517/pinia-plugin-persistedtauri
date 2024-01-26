@@ -74,8 +74,8 @@ type PersistedTauriOptions = {
   name?: string,
   // 自定义存储模式，兼容 localStorage 和 sessionStorage
   storage?: AsyncStorage | Storage,
-  // 自定义数据保存方式，目前只支持 StorageSaveType.JSON
-  saveType?: StorageSaveType,
+  // 自定义序列化方式，实现 StateSerializer 接口
+  serializer?: StateSerializer,
 }
 ```
 

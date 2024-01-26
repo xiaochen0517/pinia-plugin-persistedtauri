@@ -6,18 +6,18 @@ import _ from "lodash";
 export function createPersistedState(): PiniaPlugin {
   return (context: PiniaPluginContext) => {
     console.log("context", context);
-    const userOptions: DefineStoreOptionsPersist = context.options.persist;
+    const storeOptions: DefineStoreOptionsPersist = context.options.persist;
     const storeId: string = context.store.$id;
     // read state
-    readStorageState(context.store, userOptions, storeId);
+    readStorageState(context.store, storeOptions, storeId);
     context.store.$subscribe((_mutation: SubscriptionCallbackMutation<StateTree>, state: StateTree) => {
-      if (userOptions !== undefined && userOptions === false) {
+      if (storeOptions !== undefined && storeOptions === false) {
         // persist is disabled
         return;
       }
-      const parsedOptions: PersistedTauriOptions = getStorageOptions(userOptions, storeId);
+      const parsedOptions: PersistedTauriOptions = getStorageOptions(storeOptions, storeId);
       // save state
-      saveState(state, parsedOptions, userOptions)
+      saveState(state, parsedOptions)
         .then(() => {
         })
         .catch((err) => {
@@ -27,27 +27,25 @@ export function createPersistedState(): PiniaPlugin {
   };
 }
 
-const getStorageOptions = (userOptions: DefineStoreOptionsPersist, storeId: string): PersistedTauriOptions => {
-  let storageOptions: PersistedTauriOptions = _.cloneDeep(defaultPersistedTauriOptions);
-  storageOptions.name = storeId;
-  if (userOptions !== undefined && typeof userOptions !== "boolean") {
+const getStorageOptions = (storeOptions: DefineStoreOptionsPersist, storeId: string): PersistedTauriOptions => {
+  let defaultOptions: PersistedTauriOptions = _.cloneDeep(defaultPersistedTauriOptions);
+  defaultOptions.name = storeId;
+  if (storeOptions !== undefined && typeof storeOptions !== "boolean") {
     // persist config is custom
-    storageOptions = {...storageOptions, ...userOptions};
+    defaultOptions = {...defaultOptions, ...storeOptions};
   }
-  return storageOptions;
+  return defaultOptions;
 };
 
-const readStorageState = (store: Store, userOptions: DefineStoreOptionsPersist, storeId: string): void => {
-  if (userOptions !== undefined && userOptions === false) {
+const readStorageState = (store: Store, storeOptions: DefineStoreOptionsPersist, storeId: string): void => {
+  if (storeOptions !== undefined && storeOptions === false) {
     // persist is disabled
     return;
   }
-  console.log("store id", storeId);
-  const parsedOptions: PersistedTauriOptions = getStorageOptions(userOptions, storeId);
-  console.log("parsed options", parsedOptions);
-  getState(parsedOptions, userOptions)
+  const parsedOptions: PersistedTauriOptions = getStorageOptions(storeOptions, storeId);
+  getState(parsedOptions)
     .then((state) => {
-      store.$patch(JSON.parse(state));
+      store.$patch(state as StateTree);
     })
     .catch((err) => {
       console.warn("🚨pinia-plugin-persistedtauri warning: get state error ->", err);

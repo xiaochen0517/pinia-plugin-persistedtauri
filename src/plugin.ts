@@ -15,7 +15,7 @@ export function createPersistedState(): PiniaPlugin {
         // persist is disabled
         return;
       }
-      let parsedOptions: PersistedTauriOptions = getStorageOptions(userOptions, storeId);
+      const parsedOptions: PersistedTauriOptions = getStorageOptions(userOptions, storeId);
       // save state
       saveState(state, parsedOptions, userOptions)
         .then(() => {
@@ -35,7 +35,7 @@ const getStorageOptions = (userOptions: DefineStoreOptionsPersist, storeId: stri
     storageOptions = {...storageOptions, ...userOptions};
   }
   return storageOptions;
-}
+};
 
 const readStorageState = (store: Store, userOptions: DefineStoreOptionsPersist, storeId: string): void => {
   if (userOptions !== undefined && userOptions === false) {
@@ -52,4 +52,4 @@ const readStorageState = (store: Store, userOptions: DefineStoreOptionsPersist, 
     .catch((err) => {
       console.warn("🚨pinia-plugin-persistedtauri warning: get state error ->", err);
     });
-}
+};

@@ -18,6 +18,12 @@ module.exports = {
       "parserOptions": {
         "sourceType": "script"
       }
+    },
+    {
+      "files": ["tests/**/*"],
+      "env": {
+        "jest": true
+      }
     }
   ],
   "parser": "@typescript-eslint/parser",
